@@ -25,6 +25,8 @@ User action → IndexedDB (immediate UI update) → pending queue
 
 The client reduces inventory **only once** when recording the local sale. Sync applies that operation to MongoDB, then refreshes local IndexedDB from the server; it never reapplies the sale locally.
 
+When the API starts, it adds the starter grocery catalog (Milk, Bread, Biscuits, Rice, Wheat Flour, Sugar, Salt, Cooking Oil, Tea, Maggi, Dal, Eggs, Butter, Shampoo, Soap, Toothpaste, Potato, Onion, Tomato, Banana, Apple, Cold Drink, Namkeen, Juice, and Chocolate) if those products do not already exist. Existing products and their stock are preserved.
+
 ## Run locally
 
 1. Start MongoDB locally (or use a MongoDB Atlas URI).

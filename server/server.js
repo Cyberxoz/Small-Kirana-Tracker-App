@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import Product from './models/Product.js';
 import Sale from './models/Sale.js';
 import { processOperation } from './services/operations.js';
+import { seedStarterProducts } from './services/seedProducts.js';
 
 const app = express();
 app.use(cors());
@@ -30,5 +31,8 @@ app.use((err, _req, res, _next) => res.status(400).json({ error: err.message || 
 
 const port = process.env.PORT || 5000;
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/shoptrack')
-  .then(() => app.listen(port, () => console.log(`ShopTrack API on ${port}`)))
+  .then(async () => {
+    await seedStarterProducts();
+    app.listen(port, () => console.log(`ShopTrack API on ${port}`));
+  })
   .catch(error => { console.error('MongoDB connection failed:', error.message); process.exit(1); });

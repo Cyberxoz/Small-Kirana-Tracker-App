@@ -6,6 +6,13 @@ const money = n => new Intl.NumberFormat('en-IN', { style: 'currency', currency:
 const id = () => crypto.randomUUID().replaceAll('-', '').slice(0, 24);
 const day = value => new Date(value).toDateString() === new Date().toDateString();
 const stockStatus = stock => stock === 0 ? ['Out of Stock', 'out'] : stock <= 5 ? ['⚠ Low Stock', 'low'] : ['Normal', 'normal'];
+const starterProducts = [
+  ['Milk', 60, 20], ['Bread', 40, 15], ['Biscuits', 30, 50], ['Rice', 70, 25], ['Wheat Flour', 55, 20],
+  ['Sugar', 45, 20], ['Salt', 25, 30], ['Cooking Oil', 150, 15], ['Tea', 120, 15], ['Maggi', 15, 40],
+  ['Dal', 110, 20], ['Eggs', 7, 60], ['Butter', 60, 15], ['Shampoo', 120, 10], ['Soap', 35, 30],
+  ['Toothpaste', 95, 15], ['Potato', 30, 25], ['Onion', 35, 25], ['Tomato', 40, 25], ['Banana', 50, 20],
+  ['Apple', 120, 15], ['Cold Drink', 50, 20], ['Namkeen', 60, 20], ['Juice', 80, 15], ['Chocolate', 40, 25]
+];
 
 export default function App() {
   const [page, setPage] = useState('Dashboard');
@@ -13,8 +20,16 @@ export default function App() {
   const [online, setOnline] = useState(navigator.onLine); const [lastSync, setLastSync] = useState(null); const [notice, setNotice] = useState('');
   const [authOpen, setAuthOpen] = useState(false); const [member, setMember] = useState(() => localStorage.getItem('shoptrack-member') || '');
   const load = async () => { setProducts(await localDb.all('products')); setSales(await localDb.all('sales')); setPending(await localDb.all('syncQueue')); setLastSync((await localDb.get('meta', 'lastSync'))?.value || null); };
+  const seedLocalProducts = async () => {
+    if (await localDb.all('products').then(items => items.length)) return;
+    for (const [name, price, stock] of starterProducts) {
+      const product = { _id: id(), name, price, stock, totalSold: 0, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() };
+      await localDb.put('products', product);
+      await queue('CREATE_PRODUCT', product);
+    }
+  };
   const synchronize = async () => { await sync(setNotice); await load(); };
-  useEffect(() => { (async () => { try { if (navigator.onLine) await refreshFromServer(); } catch { setNotice('Server unavailable — working from local storage.'); } await load(); if (navigator.onLine) synchronize(); })(); }, []);
+  useEffect(() => { (async () => { try { if (navigator.onLine) await refreshFromServer(); } catch { setNotice('Server unavailable — working from local storage.'); } await seedLocalProducts(); await load(); if (navigator.onLine) synchronize(); })(); }, []);
   useEffect(() => {
     const goOnline = () => { setOnline(true); synchronize(); }; const goOffline = () => { setOnline(false); setNotice('Changes are being saved locally.'); };
     addEventListener('online', goOnline); addEventListener('offline', goOffline); return () => { removeEventListener('online', goOnline); removeEventListener('offline', goOffline); };

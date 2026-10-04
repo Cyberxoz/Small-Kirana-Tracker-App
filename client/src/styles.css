@@ -24,10 +24,96 @@ h1{font-size:30px;letter-spacing:-.8px;margin:0 0 5px;color:#13204a}h2{font-size
 .signin{border-color:#6651c9;color:#4f3ba7;font-weight:700;padding:9px 15px;margin:0}
 .account{display:flex;align-items:center;gap:7px}.account span{background:linear-gradient(135deg,#5364ef,#8d54d9);color:#fff;width:33px;height:33px;display:grid;place-items:center;border-radius:50%;font-weight:700}.account button{border:0;background:transparent;font-size:12px;margin:0;padding:4px;box-shadow:none}
 .notice{padding:13px 16px;border-radius:11px;background:#dffafa;color:#126d78;margin:-8px 0 20px;border:1px solid #bdecef}.notice.warn{background:#fff1da;color:#8c5e08;border-color:#f4d99e}
+
+/* ─── Old feature cards (kept for Products page etc.) ─── */
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:22px}
 .card,.panel,.table-wrap{background:#ffffffd9;border:1px solid #dfe5f3;border-radius:15px;box-shadow:0 10px 28px #26366d0d;backdrop-filter:blur(8px)}
 .card{padding:20px;position:relative;min-height:155px;overflow:hidden}.card:after{content:'';position:absolute;width:90px;height:90px;right:-35px;bottom:-42px;border-radius:50%;background:#7667eb12}.card small{color:#71809e;display:block;padding-right:55px}.card strong{display:block;font-size:25px;margin-top:11px;color:#202f63;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.card-icon{position:absolute;right:16px;top:16px;color:#4f56c9;background:linear-gradient(135deg,#e4f8ff,#eee7ff);padding:8px 10px;border-radius:9px;font-weight:700}.feature-card p{font-size:12px;line-height:1.45;margin-top:8px;color:#7784a0}.feature-card .online{color:#079d9a}.feature-card .offline{color:#d14b71}.feature-action{display:block;color:#5849bd;font-size:12px;font-weight:700;margin-top:12px}.feature-card.is-action{cursor:pointer}.feature-card.is-action:hover{border-color:#8d80e4;box-shadow:0 12px 28px #443a991c}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.panel{padding:22px}.row{padding:12px 0;display:flex;justify-content:space-between;border-bottom:1px solid #edf0f8}.row:last-child{border:0}.row span{color:#7a51c4;font-size:13px}.row small{display:block;color:#8994ae;font-size:11px;margin-top:4px}.sale-row strong{color:#2c3b7e;font-size:14px}.empty{padding:24px 0;text-align:center;color:#8994ae}
+
+/* ─── Hero Stats Row ─── */
+.hero-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:28px
+}
+.stat-card{
+  display:flex;align-items:center;gap:16px;padding:22px 24px;border-radius:16px;
+  background:#ffffffd9;border:1px solid #dfe5f3;box-shadow:0 8px 24px #26366d0a;
+  backdrop-filter:blur(8px);position:relative;overflow:hidden;
+  transition:transform .2s,box-shadow .2s;text-align:left
+}
+.stat-card::after{
+  content:'';position:absolute;width:120px;height:120px;border-radius:50%;
+  right:-40px;bottom:-50px;opacity:.08;pointer-events:none
+}
+.stat-card:hover{transform:translateY(-3px);box-shadow:0 14px 36px #26366d14}
+.stat-card.revenue::after{background:#10b981}
+.stat-card.inventory::after{background:#3b82f6}
+.stat-card.stock-alert::after{background:#f59e0b}
+.stat-card.cta-card::after{background:#8b5cf6}
+
+.stat-icon{
+  font-size:28px;width:52px;height:52px;display:grid;place-items:center;
+  border-radius:14px;flex:none
+}
+.stat-card.revenue .stat-icon{background:linear-gradient(135deg,#d1fae5,#a7f3d0);color:#059669}
+.stat-card.inventory .stat-icon{background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#2563eb}
+.stat-card.stock-alert .stat-icon{background:linear-gradient(135deg,#fef3c7,#fde68a);color:#d97706}
+.stat-card.cta-card .stat-icon{background:linear-gradient(135deg,#ede9fe,#ddd6fe);color:#7c3aed}
+
+.stat-body{display:flex;flex-direction:column;gap:2px;min-width:0}
+.stat-label{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#71809f}
+.stat-value{font-size:26px;font-weight:800;color:#13204a;letter-spacing:-.5px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stat-sub{font-size:12px;color:#8994ae;margin-top:2px}
+
+/* CTA card — highlighted */
+.cta-card{
+  background:linear-gradient(135deg,#4f46e5,#7c3aed)!important;border-color:transparent!important;
+  color:#fff!important;cursor:pointer;font:inherit
+}
+.cta-card .stat-icon{background:rgba(255,255,255,.2)!important;color:#fff!important}
+.cta-card .stat-label{color:#c7d2fe!important}
+.cta-card .stat-value{color:#fff!important}
+.cta-card .stat-sub{color:#c7d2fe!important;font-weight:600}
+.cta-card:hover{transform:translateY(-3px);box-shadow:0 16px 40px #4f46e540!important}
+
+/* ─── Dashboard Detail Grid ─── */
+.dash-grid{
+  display:grid;grid-template-columns:1.6fr 1fr;gap:22px
+}
+.dash-panel{padding:24px}
+.dash-panel h2{margin:0}
+
+.panel-header{
+  display:flex;justify-content:space-between;align-items:center;margin-bottom:18px
+}
+.panel-link{
+  border:0;background:none;color:#5849bd;font-size:12px;font-weight:700;
+  padding:6px 10px;border-radius:8px;margin:0;box-shadow:none
+}
+.panel-link:hover{background:#eee7ff;transform:none;box-shadow:none}
+
+.sale-list{max-height:380px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#d4d8e8 transparent}
+
+.rank{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;border-radius:6px;font-size:11px;font-weight:700;
+  background:linear-gradient(135deg,#fef3c7,#fde68a);color:#92400e;margin-right:4px
+}
+
+/* ─── Sync Status Bar ─── */
+.sync-panel{padding:16px 22px}
+.sync-row{display:flex;align-items:center;gap:12px}
+.sync-dot{
+  width:10px;height:10px;border-radius:50%;flex:none
+}
+.sync-dot.online{background:#10b981;box-shadow:0 0 8px #10b98166}
+.sync-dot.offline{background:#ef4444;box-shadow:0 0 8px #ef444466}
+.sync-info{flex:1;display:flex;flex-direction:column;gap:1px}
+.sync-info strong{font-size:14px;color:#13204a}
+.sync-info small{font-size:12px;color:#8994ae}
+.sync-icon{margin-left:auto;font-size:22px!important;width:40px!important;height:40px!important;border-radius:10px!important}
+
+/* ─── Shared elements ─── */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.panel{padding:22px}.row{padding:12px 0;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #edf0f8}.row:last-child{border:0}.row span{color:#7a51c4;font-size:13px}.row small{display:block;color:#8994ae;font-size:11px;margin-top:4px}.sale-row strong{color:#2c3b7e;font-size:14px}.empty{padding:24px 0;text-align:center;color:#8994ae}
 .toolbar{display:flex;justify-content:space-between;margin-bottom:18px;gap:15px}.toolbar input{max-width:330px}.primary{background:linear-gradient(110deg,#2c5fe5,#754fc7)!important;color:#fff!important;border-color:transparent!important;font-weight:600;box-shadow:0 7px 16px #4a53c735!important}
 .table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:620px}th,td{text-align:left;padding:15px 18px;border-bottom:1px solid #edf0f8;font-size:14px}th{font-size:12px;text-transform:uppercase;color:#7783a1;letter-spacing:.5px;background:#f7f9ff}td small{display:block;color:#8b96ad;font-size:11px;margin-top:3px}
 .danger{color:#c24b65}.badge{font-size:12px;padding:5px 8px;border-radius:99px;white-space:nowrap}.badge.normal,.badge.synced{color:#087d83;background:#dcf8f5}.badge.low,.badge.pending{color:#8153a8;background:#f0e6ff}.badge.out{color:#b33e61;background:#ffe5ed}
@@ -35,4 +121,49 @@ h1{font-size:30px;letter-spacing:-.8px;margin:0 0 5px;color:#13204a}h2{font-size
 .form{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;align-items:end;margin-bottom:20px}.form h2{grid-column:1/-1;margin:0}.form div{display:flex;gap:5px}label{font-size:13px;color:#53617f;font-weight:600;display:block}input,select{display:block;width:100%;margin-top:6px;padding:11px 12px;border:1px solid #d9e0f0;border-radius:9px;font:inherit;background:#fff;color:#273453;outline:none}input:focus,select:focus{border-color:#7464db;box-shadow:0 0 0 3px #7565db1c}
 .sale-form{max-width:550px;display:grid;gap:18px}.total{display:flex;justify-content:space-between;padding:16px;background:linear-gradient(110deg,#e6faff,#f0eaff);border:1px solid #d5e5fa;border-radius:10px;color:#607093}.total b{display:block;color:#2c3b7e;font-size:20px;margin-top:3px}
 .modal-backdrop{position:fixed;inset:0;background:#08143dcc;display:grid;place-items:center;padding:18px;z-index:10}.auth-card{width:min(430px,100%);background:#fff;border-radius:19px;padding:32px;position:relative;box-shadow:0 25px 80px #07133d66}.auth-card h2{font-size:22px;margin:13px 0 7px;letter-spacing:-.4px}.auth-card>p{font-size:14px;margin-bottom:20px}.auth-logo{height:45px;width:45px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(135deg,#ddf9ff,#ede4ff)}.auth-logo .shoptrack-logo{width:35px;height:35px}.close{position:absolute;right:18px;top:18px;border:0;font-size:25px;padding:0;width:28px;height:28px;background:transparent;margin:0;box-shadow:none}.auth-card label{margin-top:13px}.auth-submit{margin:21px 0 13px;width:100%;padding:12px}.auth-switch{text-align:center;font-size:13px;color:#63708e}.auth-switch button{border:0;color:#5e4ec1;padding:0;background:none;font-weight:700;margin:0;box-shadow:none}.demo-note{display:block;color:#8b96ad;text-align:center;font-size:11px;margin-top:14px}
-@media(max-width:1150px){.top-nav{display:none}.cards{grid-template-columns:repeat(3,1fr)}.grid{grid-template-columns:1fr 1fr}.grid .panel:first-child{grid-column:1/-1}}@media(max-width:850px){aside{width:68px;padding:18px 8px}.brand span,.nav{font-size:0}.brand{padding:4px 10px 25px}.brand span{display:none}.nav{padding:12px;text-align:center}.nav::first-letter{font-size:18px}.offline-note{display:none}main{padding:24px 18px}.cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.grid .panel:first-child{grid-column:auto}.form{grid-template-columns:1fr}.form div{grid-row:auto}.connection small{display:none}.mobile-logo{display:block;font-size:22px}}@media(max-width:480px){.topbar{align-items:flex-start}.topbar h1{font-size:25px}.header-actions{gap:8px}.connection span{display:none}.cards{grid-template-columns:1fr}.toolbar{display:block}.toolbar input{max-width:none;margin-bottom:10px}.signin{padding:8px 10px}.auth-card{padding:25px 20px}}
+
+/* Today's Sales Panel — summary stats */
+.today-sales-summary{display:flex;gap:12px;margin-bottom:16px;padding:14px;background:linear-gradient(110deg,#e6faff,#f0eaff);border:1px solid #d5e5fa;border-radius:11px}
+.today-sales-stat{flex:1;text-align:center}
+.today-sales-stat-label{display:block;font-size:11px;color:#71809f;text-transform:uppercase;letter-spacing:.4px;font-weight:600}
+.today-sales-stat-value{display:block;font-size:20px;font-weight:800;color:#202f63;margin-top:4px}
+
+/* ─── Responsive ─── */
+@media(max-width:1150px){
+  .top-nav{display:none}
+  .hero-stats{grid-template-columns:repeat(2,1fr)}
+  .dash-grid{grid-template-columns:1fr}
+  .cards{grid-template-columns:repeat(3,1fr)}
+  .grid{grid-template-columns:1fr 1fr}
+  .grid .panel:first-child{grid-column:1/-1}
+}
+@media(max-width:850px){
+  aside{width:68px;padding:18px 8px}
+  .brand span,.nav{font-size:0}.brand{padding:4px 10px 25px}.brand span{display:none}
+  .nav{padding:12px;text-align:center}.nav::first-letter{font-size:18px}
+  .offline-note{display:none}
+  main{padding:24px 18px}
+  .hero-stats{grid-template-columns:repeat(2,1fr);gap:12px}
+  .stat-card{padding:16px 18px;gap:12px}
+  .stat-value{font-size:22px}
+  .stat-icon{width:44px;height:44px;font-size:22px;border-radius:12px}
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .grid{grid-template-columns:1fr}
+  .grid .panel:first-child{grid-column:auto}
+  .form{grid-template-columns:1fr}.form div{grid-row:auto}
+  .connection small{display:none}
+  .mobile-logo{display:block;font-size:22px}
+}
+@media(max-width:480px){
+  .topbar{align-items:flex-start}.topbar h1{font-size:25px}
+  .header-actions{gap:8px}.connection span{display:none}
+  .hero-stats{grid-template-columns:1fr;gap:10px}
+  .stat-card{padding:14px 16px}
+  .stat-value{font-size:20px}
+  .cards{grid-template-columns:1fr}
+  .toolbar{display:block}.toolbar input{max-width:none;margin-bottom:10px}
+  .signin{padding:8px 10px}
+  .auth-card{padding:25px 20px}
+  .today-sales-summary{flex-direction:column;gap:8px}
+  .dash-right{display:flex;flex-direction:column;gap:18px}
+}

@@ -58,16 +58,97 @@ function AuthModal({ onClose, onComplete }) { const [isSignup, setIsSignup] = us
 function Dashboard({ products, sales, pending, stats, online, setPage }) {
   const bestProduct = stats.best.find(p => p.totalSold);
   const todaysSales = sales.filter(s => day(s.createdAt)).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-  return <><section className="cards feature-cards">
-    <FeatureCard label="Inventory" value={`${products.length} products`} icon="🏪" description="View products and available stock" action="View inventory" onClick={() => setPage('Products')} />
-    <FeatureCard label="Today’s Sales" value={money(stats.revenue)} icon="💰" description={`${stats.items} items sold today`} />
-    <FeatureCard label="Record Sale" value="Quick entry" icon="🛒" description="Add a new sale in seconds" action="Record a sale" onClick={() => setPage('New Sale')} />
-    <FeatureCard label="Low Stock" value={stats.low.length} icon="⚠️" description={stats.low.length ? 'Products that are about to finish' : 'All stock levels look healthy'} />
-    <FeatureCard label="Best-Selling Products" value={bestProduct ? bestProduct.name : 'No sales yet'} icon="🔥" description={bestProduct ? `${bestProduct.totalSold} sold so far` : 'Your top products will appear here'} />
-    <FeatureCard label="Sync Status" value={online ? 'Online' : 'Offline'} icon="🔄" description={`${pending.length} pending change${pending.length === 1 ? '' : 's'}`} status={online ? 'online' : 'offline'} />
-  </section><section className="grid"><article className="panel"><h2>💰 Today’s Sales</h2>{todaysSales.length ? todaysSales.map(s => <div className="row sale-row" key={s._id}><span><b>{s.productName}</b><small>{s.quantity} {s.quantity === 1 ? 'item' : 'items'} · {new Date(s.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</small></span><strong>{money(s.total)}</strong></div>) : <Empty text="No sales recorded today." />}</article><article className="panel"><h2>⚠ Stock Running Low</h2>{stats.low.length ? stats.low.map(p => <div className="row" key={p._id}><b>{p.name}</b><span>{p.stock} left</span></div>) : <Empty text="All inventory levels look healthy." />}</article><article className="panel"><h2>🔥 Best-Selling Products</h2>{stats.best.filter(p => p.totalSold).length ? stats.best.filter(p => p.totalSold).map((p, i) => <div className="row" key={p._id}><b>{i + 1}. {p.name}</b><span>{p.totalSold} sold</span></div>) : <Empty text="Record a sale to see your best sellers." />}</article></section></>
+  return <>
+    {/* ── Hero Stats Row ── */}
+    <section className="hero-stats">
+      <div className="stat-card revenue">
+        <div className="stat-icon">💰</div>
+        <div className="stat-body">
+          <span className="stat-label">Today's Revenue</span>
+          <span className="stat-value">{money(stats.revenue)}</span>
+          <span className="stat-sub">{stats.items} items across {todaysSales.length} sale{todaysSales.length !== 1 ? 's' : ''}</span>
+        </div>
+      </div>
+      <div className="stat-card inventory">
+        <div className="stat-icon">🏪</div>
+        <div className="stat-body">
+          <span className="stat-label">Inventory</span>
+          <span className="stat-value">{products.length}</span>
+          <span className="stat-sub">products in catalogue</span>
+        </div>
+      </div>
+      <div className="stat-card stock-alert">
+        <div className="stat-icon">⚠️</div>
+        <div className="stat-body">
+          <span className="stat-label">Low Stock Alerts</span>
+          <span className="stat-value">{stats.low.length}</span>
+          <span className="stat-sub">{stats.low.length ? 'items need restocking' : 'all levels healthy'}</span>
+        </div>
+      </div>
+      <button className="stat-card cta-card" onClick={() => setPage('New Sale')}>
+        <div className="stat-icon">🛒</div>
+        <div className="stat-body">
+          <span className="stat-label">Quick Entry</span>
+          <span className="stat-value cta-value">{money(stats.revenue)}</span>
+          <span className="stat-sub">Record a new sale →</span>
+        </div>
+      </button>
+    </section>
+
+    {/* ── Detail Grid ── */}
+    <section className="dash-grid">
+      {/* Today's Sales Panel */}
+      <article className="panel dash-panel sales-panel">
+        <div className="panel-header">
+          <h2>💰 Today's Sales</h2>
+          <button className="panel-link" onClick={() => setPage('Sales History')}>View all →</button>
+        </div>
+        {todaysSales.length ? <>
+          <div className="today-sales-summary">
+            <div className="today-sales-stat"><span className="today-sales-stat-label">Revenue</span><span className="today-sales-stat-value">{money(stats.revenue)}</span></div>
+            <div className="today-sales-stat"><span className="today-sales-stat-label">Items</span><span className="today-sales-stat-value">{stats.items}</span></div>
+            <div className="today-sales-stat"><span className="today-sales-stat-label">Txns</span><span className="today-sales-stat-value">{todaysSales.length}</span></div>
+          </div>
+          <div className="sale-list">
+            {todaysSales.map(s => <div className="row sale-row" key={s._id}>
+              <span><b>{s.productName}</b><small>{s.quantity} {s.quantity === 1 ? 'item' : 'items'} · {money(s.price)} each · {new Date(s.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</small></span>
+              <strong>{money(s.total)}</strong>
+            </div>)}
+          </div>
+        </> : <Empty text="No sales recorded today." />}
+      </article>
+
+      {/* Right Column */}
+      <div className="dash-right">
+        {/* Low Stock */}
+        <article className="panel dash-panel">
+          <div className="panel-header"><h2>⚠ Low Stock</h2><button className="panel-link" onClick={() => setPage('Products')}>Manage →</button></div>
+          {stats.low.length ? stats.low.map(p => <div className="row" key={p._id}><b>{p.name}</b><span className="badge low">{p.stock} left</span></div>) : <Empty text="All inventory levels look healthy." />}
+        </article>
+
+        {/* Best Sellers */}
+        <article className="panel dash-panel">
+          <div className="panel-header"><h2>🔥 Best Sellers</h2></div>
+          {stats.best.filter(p => p.totalSold).length ? stats.best.filter(p => p.totalSold).map((p, i) => <div className="row" key={p._id}><b><span className="rank">#{i + 1}</span> {p.name}</b><span className="badge synced">{p.totalSold} sold</span></div>) : <Empty text="Record a sale to see your best sellers." />}
+        </article>
+
+        {/* Sync Status */}
+        <article className="panel dash-panel sync-panel">
+          <div className="sync-row">
+            <span className={'sync-dot ' + (online ? 'online' : 'offline')} />
+            <div className="sync-info">
+              <strong>{online ? 'Online' : 'Offline'}</strong>
+              <small>{pending.length} pending change{pending.length !== 1 ? 's' : ''}</small>
+            </div>
+            <span className="stat-icon sync-icon">🔄</span>
+          </div>
+        </article>
+      </div>
+    </section>
+  </>;
 }
 function FeatureCard({ label, value, icon, description, action, onClick, status }) { return <article className={'card feature-card ' + (onClick ? 'is-action' : '')} onClick={onClick} role={onClick ? 'button' : undefined} tabIndex={onClick ? 0 : undefined} onKeyDown={onClick ? e => { if (e.key === 'Enter' || e.key === ' ') onClick(); } : undefined}><span className="card-icon">{icon}</span><small>{label}</small><strong className={status}>{value}</strong><p>{description}</p>{action && <span className="feature-action">{action} →</span>}</article>; }
+
 function Empty({ text }) { return <p className="empty">{text}</p>; }
 
 function Products({ products, pending, mutate, refresh, setNotice }) { const [query, setQuery] = useState(''); const [editing, setEditing] = useState(null); const filtered = [...products].sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0)).filter(p => p.name.toLowerCase().includes(query.toLowerCase()));

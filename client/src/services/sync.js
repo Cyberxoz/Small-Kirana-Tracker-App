@@ -10,9 +10,9 @@ export async function refreshFromServer() {
 }
 // Process in queue order. Successful operations are removed, failures remain for the next online event.
 export async function sync(onStatus) {
-  if (!navigator.onLine) return;
+  if (!navigator.onLine) return false;
   const operations = await localDb.all('syncQueue');
-  if (!operations.length) { await refreshFromServer(); return; }
+  if (!operations.length) { await refreshFromServer(); return true; }
   onStatus?.('Synchronizing local changes…');
   try {
     const response = await api('/api/sync', { method: 'POST', body: JSON.stringify({ operations }) });
@@ -21,5 +21,6 @@ export async function sync(onStatus) {
     for (const result of results) if (result.success) { const item = operations.find(x => x.operationId === result.operationId); await localDb.remove('syncQueue', item._id); }
     await refreshFromServer(); await localDb.put('meta', { key: 'lastSync', value: new Date().toISOString() });
     onStatus?.(results.some(x => !x.success) ? 'Some changes will retry later.' : 'Synchronization complete');
-  } catch { onStatus?.('⚠ Sync failed — will retry when connection is available.'); }
+    return results.every(x => x.success);
+  } catch { onStatus?.('⚠ Sync failed — will retry when connection is available.'); return false; }
 }
